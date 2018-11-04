@@ -2,19 +2,21 @@
   <mat-tab label="抽奖">
     <div class="container">
       <div *ngIf="!drawFinished">
-        <div class="row">
-          <div class="col-xl-2">现在抽的是：</div>
-          <div class="col-xl-10">{{currentAward.name}}</div>
-        </div>
-        <div class="row">
-          <div class="col-xl-2">奖品数量：</div>
-          <div class="col-xl-10">{{currentAward.quantity}}</div>
-        </div>
-        <div class="row">
-          <img src="{{currentAward.imageSrc}}">
+        <div *ngIf="!isDrawInProgress">
+          <div class="row">
+            <div class="col-xl-2">现在抽的是：</div>
+            <div class="col-xl-10">{{currentAward.name}}</div>
+          </div>
+          <div class="row">
+            <div class="col-xl-2">奖品数量：</div>
+            <div class="col-xl-10">{{currentAward.quantity}}</div>
+          </div>
+          <div class="row">
+            <img src="{{currentAward.imageSrc}}">
+          </div>
         </div>
         <button mat-raised-button color="primary" (click)="startDraw()">{{drawButtonText}}</button>
-        <div *ngIf="isDrawInProgress">{{displayText}}</div>
+        <div style="font-size:50px" *ngIf="isDrawInProgress">{{displayText}}</div>
       </div>
       <div *ngIf="drawFinished || winners.length > 0">
         <div class="row">恭喜以下获奖者</div>
@@ -30,7 +32,7 @@
               <th>
                 <img style="width:100px;height:100px" src="{{item.imageSrc}}">
               </th>
-              <th>{{winners[i]}}</th>
+              <th>{{winners[i].toString()}}</th>
             </tr>
           </table>
         </div>

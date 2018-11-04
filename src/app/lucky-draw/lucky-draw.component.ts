@@ -13,7 +13,6 @@ export class LuckyDrawComponent implements OnInit {
   currentAward: Award;
   finishedAwards: Award[] = [];
   winners = [];
-  currentAwardLeft = 0;
   drawButtonText = '开始抽奖';
   isDrawInProgress = false;
   displayText = '';
@@ -42,12 +41,15 @@ export class LuckyDrawComponent implements OnInit {
   }
 
   switchAward() {
-    if (this.currentAwardLeft === 0 && this.awardsList.length > 0) {
+    if (this.awardsList.length > 0) {
+      this.currentAward = this.awardsList[0];
+      let hasAllAwardFinished = false;
       for (let i = 0; i < this.awardsList.length; i++) {
-        let hasAllAwardFinished = false;
+        // TODO: fix this logic issue
         for (const finishedItem of this.finishedAwards) {
-          if (finishedItem === this.awardsList[i]) {
-            hasAllAwardFinished = true;
+          console.log(finishedItem.name);
+          if (finishedItem !== this.awardsList[i]) {
+            hasAllAwardFinished = false;
             break;
           }
         }
@@ -58,15 +60,19 @@ export class LuckyDrawComponent implements OnInit {
           this.drawFinished = true;
         }
       }
-      this.currentAward = this.awardsList[0];
     }
   }
 
+  // draw one award one time.
   startDraw() {
     if (this.isDrawInProgress) {
+      const awardWinners = [];
       for (let i = 0; i < this.currentAward.quantity; i++) {
-        this.doDraw(this.currentAward.allowDuplicate);
+        awardWinners.push(this.doDraw(this.currentAward.allowDuplicate));
       }
+      this.winners.push(awardWinners.toString());
+      this.finishedAwards.push(this.currentAward);
+      this.switchAward();
     }
 
     this.isDrawInProgress = !this.isDrawInProgress;
@@ -77,26 +83,28 @@ export class LuckyDrawComponent implements OnInit {
     }
   }
 
-  doDraw(allowDuplicate: boolean) {
-    const currentAwardList = [];
-    for (let i = 0; i < this.currentAward.quantity; i++) {
-      let tmpWinner = this.participantList[this.getRandomInt()];
-      if (!allowDuplicate) {
-        let isUserDuplicate = true;
-        while (isUserDuplicate) {
-          isUserDuplicate = false;
-          for (const index in this.winners) {
-            if (tmpWinner in this.winners[index]) {
-              isUserDuplicate = true;
-              tmpWinner = this.participantList[this.getRandomInt()];
-              break;
-            }
+  // draw one winner one time
+  doDraw(allowDuplicate: boolean): string {
+    let tmpWinner = this.participantList[this.getRandomInt()];
+    // 如果奖项不允许重复，检查获奖人是否重复，重复了重新抽。
+    // TODO: fix this logic issue
+    if (!allowDuplicate) {
+      let isUserDuplicate = true;
+      while (isUserDuplicate) {
+        let tmpDuplicate = false;
+        for (const item of this.winners) {
+          if (item.toString().includes(tmpWinner)) {
+            tmpDuplicate = true;
+            tmpWinner = this.participantList[this.getRandomInt()];
+            break;
           }
         }
+        if (!tmpDuplicate) {
+          isUserDuplicate = tmpDuplicate;
+        }
       }
-      currentAwardList.push(tmpWinner);
     }
-    this.winners.push(currentAwardList.toString());
+    return tmpWinner;
   }
 
   getRandomInt(): number {
