@@ -1,0 +1,68 @@
+<mat-tab-group>
+  <mat-tab label="抽奖">
+    <div class="container">
+      <div *ngIf="!drawFinished">
+        <div class="row">
+          <div class="col-xl-2">现在抽的是：</div>
+          <div class="col-xl-10">{{currentAward.name}}</div>
+        </div>
+        <div class="row">
+          <div class="col-xl-2">奖品数量：</div>
+          <div class="col-xl-10">{{currentAward.quantity}}</div>
+        </div>
+        <div class="row">
+          <img src="{{currentAward.imageSrc}}">
+        </div>
+        <button mat-raised-button color="primary" (click)="startDraw()">{{drawButtonText}}</button>
+        <div *ngIf="isDrawInProgress">{{displayText}}</div>
+      </div>
+      <div *ngIf="drawFinished || winners.length > 0">
+        <div class="row">恭喜以下获奖者</div>
+        <div class="row">
+          <table class="table">
+            <tr>
+              <th>奖项名称</th>
+              <th>奖项图片</th>
+              <th>获奖者</th>
+            </tr>
+            <tr *ngFor="let item of finishedAwards;let i = index;">
+              <th>{{item.name}}</th>
+              <th>
+                <img style="width:100px;height:100px" src="{{item.imageSrc}}">
+              </th>
+              <th>{{winners[i]}}</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="清单">
+    <div class="container">
+    <div class="row">
+      <div class="col-xl-2">参加人员：</div>
+      <div class="col-xl-10">{{participantList}}</div>
+    </div>
+    <div class="row" >
+      <table class="table">
+        <tr>
+          <th>奖项名称</th>
+          <th>奖项数量</th>
+          <th>奖项是否允许重复</th>
+          <th>奖项图片</th>
+        </tr>
+        <tr *ngFor="let item of awardsList">
+          <th>{{item.name}}</th>
+          <th>{{item.quantity}}</th>
+          <th>
+            <mat-checkbox [checked]="item.allowDuplicate" disabled="true"></mat-checkbox>
+          </th>
+          <th>
+            <img style="width:100px;height:100px" src="{{item.imageSrc}}">
+          </th>
+        </tr>
+      </table>
+    </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
