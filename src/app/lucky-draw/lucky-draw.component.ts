@@ -57,7 +57,7 @@ export class LuckyDrawComponent implements OnInit {
             break;
           }
         }
-        if (isCurrentAwardFinished === false) {
+        if (!isCurrentAwardFinished) {
           tmpAward = this.awardsList[i];
           hasAllAwardFinished = false;
           break;
@@ -75,7 +75,7 @@ export class LuckyDrawComponent implements OnInit {
 
   // draw one award one time.
   startDraw() {
-    this.isDrawInProgress = !this.isDrawInProgress;
+    this.isDrawInProgress = true;
   }
   stopDraw() {
     if (this.isDrawInProgress) {
@@ -88,7 +88,7 @@ export class LuckyDrawComponent implements OnInit {
       this.finishedAwards.push(this.currentAward);
       this.switchAward();
     }
-    this.isDrawInProgress = !this.isDrawInProgress;
+    this.isDrawInProgress = false;
   }
 
   // draw one winner one time
@@ -96,27 +96,40 @@ export class LuckyDrawComponent implements OnInit {
     let tmpWinner = this.participantList[this.getRandomInt()];
     // 如果奖项不允许重复，检查获奖人是否重复，重复了重新抽。
     if (!allowDuplicate) {
-      let isUserDuplicate = true;
-      while (isUserDuplicate) {
-        let tmpDuplicate = false;
-        for (const item of this.winners) {
-          console.log(item.toString());
-          if (item.toString().includes(tmpWinner)) {
-            tmpDuplicate = true;
-            tmpWinner = this.participantList[this.getRandomInt()];
-            break;
-          }
+      // 检查是不是所有用户都中过奖了
+      let isAllUserWinner = true;
+      for (const user in this.participantList) {
+        if (!this.isUserWinner(user))
+        {
+          isAllUserWinner = false;
+          break;
         }
-        if (this.currentWinner.includes(tmpWinner)) {
-          tmpDuplicate = true;
-          tmpWinner = this.participantList[this.getRandomInt()];
-        }
-        if (!tmpDuplicate) {
-          isUserDuplicate = tmpDuplicate;
-        }
+      }
+      // 如果都中过奖了，返回空字符串（没人能中奖了）。
+      if (isAllUserWinner) {
+        return '';
+      }
+      // 如果当前中奖者中过奖，换人重新随机
+      while (this.isUserWinner(tmpWinner)) {
+        tmpWinner = this.participantList[this.getRandomInt()];
       }
     }
     return tmpWinner;
+  }
+
+  isUserWinner(userName: string): Boolean {
+    let result = false;
+    for (const item of this.winners) {
+      console.log(item.toString());
+      if (item.toString().includes(userName)) {
+        result = true;
+        break;
+      }
+    }
+    if (this.currentWinner.includes(userName)) {
+      result = true;
+    }
+    return result;
   }
 
   getRandomInt(): number {
