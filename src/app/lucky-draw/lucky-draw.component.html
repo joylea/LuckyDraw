@@ -2,7 +2,7 @@
   <mat-tab label="抽奖">
     <div class="container">
       <div *ngIf="!drawFinished">
-        <div *ngIf="!isDrawInProgress">
+        <div>
           <div class="row">
             <div class="col-xl-2">奖品：</div>
             <div class="col-xl-2">{{currentAward.name}}</div>
@@ -15,10 +15,9 @@
             <img src="{{currentAward.imageSrc}}">
           </div>
         </div>
+        <div style="font-size:50px" *ngIf="isDrawInProgress">{{displayText}}</div>
         <div *ngIf="!isDrawInProgress"><button mat-raised-button color="primary" (click)="startDraw();">开始抽奖</button></div>
         <div *ngIf="isDrawInProgress"><button mat-raised-button color="primary" (click)="stopDraw();open(content)">停</button></div>
-        <div style="font-size:50px" *ngIf="isDrawInProgress">{{displayText}}</div>
-        <!-- <pre>{{closeResult}}</pre> -->
       </div>
       <div *ngIf="drawFinished">请查看中奖名单</div>
     </div>

@@ -20,7 +20,9 @@ export class LuckyDrawComponent implements OnInit {
   closeResult: string;
 
   constructor(private modalService: NgbModal) {
-    this.participantList = ['Gloria', 'Rita', 'Cecilia', 'Cary', 'Danny', 'Joe'];
+    // 参加抽奖名单
+    this.participantList = ['Gloria', 'Rita', 'Cecilia', 'Cary', 'Danny', 'Joe','Jessica'];
+    // 奖项
     const secondPrize: Award = {
       allowDuplicate: false,
       imageSrc: '../../assets/image/2.jpg',
@@ -46,27 +48,29 @@ export class LuckyDrawComponent implements OnInit {
     if (this.awardsList.length > 0) {
       if (!this.currentAward) {
         this.currentAward = this.awardsList[0];
-      }
-      let hasAllAwardFinished = true;
-      let tmpAward: Award;
-      for (let i = 0; i < this.awardsList.length; i++) {
-        let isCurrentAwardFinished = false;
-        for (const finishedItem of this.finishedAwards) {
-          if (this.awardsList[i] === finishedItem) {
-            isCurrentAwardFinished = true;
+      } else {
+        let hasAllAwardFinished = true;
+        let tmpAward: Award;
+        // 查看是不是所有奖项都抽过了，如果有没有抽过的，按照list一个个抽
+        for (let i = 0; i < this.awardsList.length; i++) {
+          let isAwardFinished = false;
+          for (const finishedItem of this.finishedAwards) {
+            if (this.awardsList[i] === finishedItem) {
+              isAwardFinished = true;
+              break;
+            }
+          }
+          if (!isAwardFinished) {
+            tmpAward = this.awardsList[i];
+            hasAllAwardFinished = false;
             break;
           }
         }
-        if (!isCurrentAwardFinished) {
-          tmpAward = this.awardsList[i];
-          hasAllAwardFinished = false;
-          break;
+        if (!hasAllAwardFinished) {
+          this.currentAward = tmpAward;
+        } else {
+          this.drawFinished = true;
         }
-      }
-      if (!hasAllAwardFinished) {
-        this.currentAward = tmpAward;
-      } else {
-        this.drawFinished = true;
       }
     } else {
       this.drawFinished = true;
@@ -86,7 +90,7 @@ export class LuckyDrawComponent implements OnInit {
       }
       this.winners.push(awardWinners.toString());
       this.finishedAwards.push(this.currentAward);
-      this.switchAward();
+      
     }
     this.isDrawInProgress = false;
   }
@@ -149,6 +153,7 @@ export class LuckyDrawComponent implements OnInit {
   }
 
   private getDismissReason(reason: any): string {
+    this.switchAward();
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
