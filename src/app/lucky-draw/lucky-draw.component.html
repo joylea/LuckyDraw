@@ -4,42 +4,26 @@
       <div *ngIf="!drawFinished">
         <div *ngIf="!isDrawInProgress">
           <div class="row">
-            <div class="col-xl-2">现在抽的是：</div>
-            <div class="col-xl-10">{{currentAward.name}}</div>
+            <div class="col-xl-2">奖品：</div>
+            <div class="col-xl-2">{{currentAward.name}}</div>
           </div>
           <div class="row">
-            <div class="col-xl-2">奖品数量：</div>
-            <div class="col-xl-10">{{currentAward.quantity}}</div>
+            <div class="col-xl-2">数量：</div>
+            <div class="col-xl-2">{{currentAward.quantity}}</div>
           </div>
           <div class="row">
             <img src="{{currentAward.imageSrc}}">
           </div>
         </div>
-        <button mat-raised-button color="primary" (click)="startDraw()">{{drawButtonText}}</button>
+        <div *ngIf="!isDrawInProgress"><button mat-raised-button color="primary" (click)="startDraw();">开始抽奖</button></div>
+        <div *ngIf="isDrawInProgress"><button mat-raised-button color="primary" (click)="stopDraw();open(content)">停</button></div>
         <div style="font-size:50px" *ngIf="isDrawInProgress">{{displayText}}</div>
+        <!-- <pre>{{closeResult}}</pre> -->
       </div>
-      <div *ngIf="drawFinished || winners.length > 0">
-        <div class="row">恭喜以下获奖者</div>
-        <div class="row">
-          <table class="table">
-            <tr>
-              <th>奖项名称</th>
-              <th>奖项图片</th>
-              <th>获奖者</th>
-            </tr>
-            <tr *ngFor="let item of finishedAwards;let i = index;">
-              <th>{{item.name}}</th>
-              <th>
-                <img style="width:100px;height:100px" src="{{item.imageSrc}}">
-              </th>
-              <th>{{winners[i].toString()}}</th>
-            </tr>
-          </table>
-        </div>
-      </div>
+      <div *ngIf="drawFinished">都抽完啦~</div>
     </div>
   </mat-tab>
-  <mat-tab label="清单">
+  <mat-tab label="配置清单">
     <div class="container">
     <div class="row">
       <div class="col-xl-2">参加人员：</div>
@@ -50,7 +34,7 @@
         <tr>
           <th>奖项名称</th>
           <th>奖项数量</th>
-          <th>奖项是否允许重复</th>
+          <th>是否允许重复中奖</th>
           <th>奖项图片</th>
         </tr>
         <tr *ngFor="let item of awardsList">
@@ -67,4 +51,41 @@
     </div>
     </div>
   </mat-tab>
+  <mat-tab label="中奖名单" *ngIf="finishedAwards.length > 0">
+    <div class="container">
+      <div class="row">恭喜以下获奖者</div>
+      <div class="row">
+        <table class="table">
+          <tr>
+            <th>奖项名称</th>
+            <th>奖品</th>
+            <th>获奖者</th>
+          </tr>
+          <tr *ngFor="let item of finishedAwards;let i = index;">
+            <th>{{item.name}}</th>
+            <th>
+              <img style="width:100px;height:100px" src="{{item.imageSrc}}">
+            </th>
+            <th>{{winners[i].toString()}}</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </mat-tab>
 </mat-tab-group>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">恭喜</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>{{currentWinner}}</p>
+    </div>
+    <div class="modal-footer">
+      <button mat-raised-button color="primary" (click)="d('Close click')">Close</button>
+    </div>
+  </ng-template>
+  
