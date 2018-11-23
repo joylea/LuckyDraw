@@ -18,8 +18,12 @@ export class LuckyDrawComponent implements OnInit {
   isDrawInProgress = false;
   displayText = '';
   closeResult: string;
+  isDrawAll = false;
+  selectedIndex = 0;
 
   constructor(private modalService: NgbModal) {
+	// 一次性抽完
+	this.isDrawAll = false;
     // 参加抽奖名单
     this.participantList = ['Gloria', 'Rita', 'Cecilia', 'Cary', 'Danny', 'Joe','Jessica'];
     // 奖项
@@ -70,10 +74,12 @@ export class LuckyDrawComponent implements OnInit {
           this.currentAward = tmpAward;
         } else {
           this.drawFinished = true;
+		      this.selectedIndex = 2;
         }
       }
     } else {
       this.drawFinished = true;
+	    this.selectedIndex = 2;
     }
   }
 
@@ -82,7 +88,22 @@ export class LuckyDrawComponent implements OnInit {
     this.isDrawInProgress = true;
   }
   stopDraw() {
-    if (this.isDrawInProgress) {
+    if (this.isDrawAll) {
+      while (!this.drawFinished)
+      {
+        this.oneDraw();
+        this.switchAward();
+        this.isDrawInProgress = true;
+      }
+      this.currentWinner = '恭喜各位中奖者，请查看中奖名单';
+      this.selectedIndex = 2;
+    } else {
+      this.oneDraw();
+    }
+  }
+  
+	oneDraw() {
+		if (this.isDrawInProgress) {
       const awardWinners = [];
       for (let i = 0; i < this.currentAward.quantity; i++) {
         awardWinners.push(this.doDraw(this.currentAward.allowDuplicate));
@@ -93,7 +114,7 @@ export class LuckyDrawComponent implements OnInit {
       
     }
     this.isDrawInProgress = false;
-  }
+	}
 
   // draw one winner one time
   doDraw(allowDuplicate: boolean): string {
