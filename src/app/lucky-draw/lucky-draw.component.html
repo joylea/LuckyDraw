@@ -2,7 +2,7 @@
   <mat-tab label="抽奖">
     <div class="container">
       <div *ngIf="!drawFinished">
-        <div>
+        <div *ngIf="!isDrawAll">
           <div class="row">
             <div class="col-xl-2">奖品：</div>
             <div class="col-xl-2">{{currentAward.name}}</div>
@@ -11,11 +11,15 @@
             <div class="col-xl-2">数量：</div>
             <div class="col-xl-2">{{currentAward.quantity}}</div>
           </div>
-          <div class="row">
-            <img style="width:500px;height:500px;" src="{{currentAward.imageSrc}}">
+          <div class="row" >
+            <img *ngIf="currentAward.imageSrc" style="width:500px;height:500px;" src="{{currentAward.imageSrc}}">
           </div>
         </div>
-    
+        <div *ngIf="isDrawAll">
+            <div class="row">
+                <div class="col-xl-2">一次性抽完所有奖</div>
+              </div>
+        </div>
         <div style="padding-left:150px">
             <div style="font-size:50px" *ngIf="isDrawInProgress">{{displayText}}</div>
             <div *ngIf="!isDrawInProgress"><button mat-raised-button color="primary" (click)="startDraw();">开始抽奖</button></div>
@@ -46,7 +50,7 @@
             <mat-checkbox [checked]="item.allowDuplicate" disabled="true"></mat-checkbox>
           </th>
           <th>
-            <img style="width:100px;height:100px" src="{{item.imageSrc}}">
+            <img *ngIf="item.imageSrc" style="width:100px;height:100px" src="{{item.imageSrc}}">
           </th>
         </tr>
       </table>
@@ -60,13 +64,13 @@
         <table class="table">
           <tr>
             <th>奖项名称</th>
-            <th>奖品</th>
+            <th>奖品图片</th>
             <th>获奖者</th>
           </tr>
           <tr *ngFor="let item of finishedAwards;let i = index;">
             <th>{{item.name}}</th>
             <th>
-              <img style="width:100px;height:100px" src="{{item.imageSrc}}">
+              <img *ngIf="item.imageSrc" style="width:100px;height:100px" src="{{item.imageSrc}}">
             </th>
             <th>{{winners[i].toString()}}</th>
           </tr>

@@ -22,21 +22,27 @@ export class LuckyDrawComponent implements OnInit {
   selectedIndex = 0;
 
   constructor(private modalService: NgbModal) {
-	// 一次性抽完
-	this.isDrawAll = false;
+    // 一次性抽完
+    this.isDrawAll = true;
     // 参加抽奖名单
-    this.participantList = ['Gloria', 'Rita', 'Cecilia', 'Cary', 'Danny', 'Joe','Jessica'];
+    this.participantList = ['Ada Liu','Ally Zhou','Angela Wan','Cecilia Zheng','Daniel Chen','Grace Ke','Jennifer','Joan zhang','Lena wang','Lynn Liu','Nicole Yu','Sally Xie','Shelly Song','sissi zhang','syney.zheng','陈辉','陈维佳','丁婧珺','冯洋','赖静然','李峤','李玉珊','刘志攀','柳建磊','罗明煜','潘迪宁','彭越','史道青','王茵如','杨倩瑶','杨宇','臧晓娟','张琳琳'];
     // 奖项
+    const thirdPrize: Award = {
+      allowDuplicate: false,
+      imageSrc: '',
+      name: '优酷会员',
+      quantity: 1};
     const secondPrize: Award = {
       allowDuplicate: false,
-      imageSrc: '../../assets/image/2.jpg',
-      name: '蛋糕',
-      quantity: 3};
+      imageSrc: '',
+      name: '腾讯会员',
+      quantity: 1};
     const firstPrize: Award = {
       allowDuplicate: false,
-      imageSrc: '../../assets/image/1.jpg',
-      name: '手机',
+      imageSrc: '',
+      name: '充电宝',
       quantity: 1};
+      this.awardsList.push(thirdPrize);
     this.awardsList.push(secondPrize);
     this.awardsList.push(firstPrize);
   }
