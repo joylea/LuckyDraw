@@ -189,4 +189,8 @@ export class LuckyDrawComponent implements OnInit {
       return  `with: ${reason}`;
     }
   }
+
+  onIsDrawAllChange(){
+    this.isDrawAll = !this.isDrawAll;
+  }
 }

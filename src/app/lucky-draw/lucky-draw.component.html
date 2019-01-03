@@ -31,30 +31,33 @@
   </mat-tab>
   <mat-tab label="配置清单">
     <div class="container">
-    <div class="row">
-      <div class="col-xl-2">参加人员：</div>
-      <div class="col-xl-10">{{participantList}}</div>
-    </div>
-    <div class="row" >
-      <table class="table">
-        <tr>
-          <th>奖项名称</th>
-          <th>奖项数量</th>
-          <th>是否允许重复中奖</th>
-          <th>奖项图片</th>
-        </tr>
-        <tr *ngFor="let item of awardsList">
-          <th>{{item.name}}</th>
-          <th>{{item.quantity}}</th>
-          <th>
-            <mat-checkbox [checked]="item.allowDuplicate" disabled="true"></mat-checkbox>
-          </th>
-          <th>
-            <img *ngIf="item.imageSrc" style="width:100px;height:100px" src="{{item.imageSrc}}">
-          </th>
-        </tr>
-      </table>
-    </div>
+      <div class="row">
+          <mat-checkbox [checked]="isDrawAll" (change)="onIsDrawAllChange()" color="primary" >是否一次性抽全部奖</mat-checkbox>
+      </div>
+      <div class="row">
+        <div class="col-xl-2">参加人员：</div>
+        <div class="col-xl-10">{{participantList}}</div>
+      </div>
+      <div class="row" >
+        <table class="table">
+          <tr>
+            <th>奖项名称</th>
+            <th>奖项数量</th>
+            <th>是否允许重复中奖</th>
+            <th>奖项图片</th>
+          </tr>
+          <tr *ngFor="let item of awardsList">
+            <th>{{item.name}}</th>
+            <th>{{item.quantity}}</th>
+            <th>
+              <mat-checkbox [checked]="item.allowDuplicate" disabled="true"></mat-checkbox>
+            </th>
+            <th>
+              <img *ngIf="item.imageSrc" style="width:100px;height:100px" src="{{item.imageSrc}}">
+            </th>
+          </tr>
+        </table>
+      </div>
     </div>
   </mat-tab>
   <mat-tab label="中奖名单" *ngIf="finishedAwards.length > 0">
