@@ -23,9 +23,9 @@ export class LuckyDrawComponent implements OnInit {
 
   constructor(private modalService: NgbModal) {
     // 一次性抽完
-    this.isDrawAll = true;
+    this.isDrawAll = false;
     // 参加抽奖名单
-    this.participantList = ['Ada Liu','Ally Zhou','Angela Wan','Cecilia Zheng','Daniel Chen','Grace Ke','Jennifer','Joan zhang','Lena wang','Lynn Liu','Nicole Yu','Sally Xie','Shelly Song','sissi zhang','syney.zheng','陈辉','陈维佳','丁婧珺','冯洋','赖静然','李峤','李玉珊','刘志攀','柳建磊','罗明煜','潘迪宁','彭越','史道青','王茵如','杨倩瑶','杨宇','臧晓娟','张琳琳'];
+    this.participantList = ['Ada Liu','Ally Zhou','Angela Wan'];
     // 奖项
     const thirdPrize: Award = {
       allowDuplicate: false,
