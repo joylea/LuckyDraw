@@ -34,10 +34,6 @@
       <div class="row">
           <mat-checkbox [checked]="isDrawAll" (change)="onIsDrawAllChange()" color="primary" >是否一次性抽全部奖</mat-checkbox>
       </div>
-      <div class="row">
-        <div class="col-xl-2">参加人员：</div>
-        <div class="col-xl-10">{{participantList}}</div>
-      </div>
       <div class="row" >
         <table class="table">
           <tr>
@@ -58,6 +54,17 @@
           </tr>
         </table>
       </div>
+      <div class="row">
+          <div class="col-xl-2">参加人员：</div>
+          <div class="col-xl-10">
+            <table class="table">
+              <tr *ngFor="let participant of participantList; let i = index">
+                  <td>{{i+1}}</td>
+                <td>{{participant}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
     </div>
   </mat-tab>
   <mat-tab label="中奖名单" *ngIf="finishedAwards.length > 0">

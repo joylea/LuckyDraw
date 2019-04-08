@@ -25,7 +25,7 @@ export class LuckyDrawComponent implements OnInit {
     // 一次性抽完
     this.isDrawAll = false;
     // 参加抽奖名单
-    this.participantList = ['Ada Liu','Ally Zhou','Angela Wan'];
+    this.participantList = [];
     // 奖项
     const thirdPrize: Award = {
       allowDuplicate: false,
@@ -37,12 +37,12 @@ export class LuckyDrawComponent implements OnInit {
       imageSrc: '',
       name: '腾讯会员',
       quantity: 1};
-    const firstPrize: Award = {
-      allowDuplicate: false,
-      imageSrc: '',
-      name: '充电宝',
-      quantity: 1};
-      this.awardsList.push(thirdPrize);
+   const firstPrize: Award = {
+     allowDuplicate: false,
+     imageSrc: '',
+     name: '充电宝',
+     quantity: 1};
+    this.awardsList.push(thirdPrize);
     this.awardsList.push(secondPrize);
     this.awardsList.push(firstPrize);
   }
